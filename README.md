@@ -20,7 +20,6 @@ This project explores customer demographics, services, contract details, charges
 ```text
 customer-churn-prediction/
 ├── customer_churn_analysis.ipynb  # Main analysis notebook
-├── Copy of Untitled18.ipynb       # Original notebook copy
 ├── telco.csv                      # Customer churn dataset
 └── README.md                      # Project documentation
 ```
