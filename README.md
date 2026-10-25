@@ -1,68 +1,94 @@
 # Customer Churn Prediction
 
-Machine learning analysis for predicting customer churn from the Telco customer dataset.
+An end-to-end customer churn analysis project using the Telco customer dataset. The notebook explores and prepares the data, trains and evaluates classification models, and saves an XGBoost model. A Streamlit app uses the saved model to estimate churn risk for a customer profile.
 
-## Project Overview
+> Model predictions are estimates based on the provided dataset; they are not guarantees of future customer behavior.
 
-This project explores customer demographics, services, contract details, charges, and churn behavior. It includes data cleaning, exploratory analysis, feature encoding, scaling, model training, and model evaluation.
+## Project features
 
-## Models Used
+- Explore customer demographics, services, contracts, payment methods, and churn.
+- Prepare features and train classification models.
+- Evaluate predictions, including ROC-AUC, and inspect XGBoost feature importances.
+- Save and load models with Joblib.
+- Try an interactive churn-risk prediction in the Streamlit app.
+- Explore SHAP explanations and a Gradio demo from the notebook.
 
-- Logistic Regression
-- Decision Tree Classifier
-- Random Forest Classifier
-- K-Nearest Neighbors
-- Support Vector Machine
-- Gaussian Naive Bayes
+Models explored in the notebook include Logistic Regression, Decision Tree, Random Forest, K-Nearest Neighbors, Support Vector Machine, Gaussian Naive Bayes, and XGBoost.
 
-## Repository Contents
+## Project structure
 
 ```text
 customer-churn-prediction/
-├── customer_churn_analysis.ipynb  # Main analysis notebook
-├── telco.csv                      # Customer churn dataset
-└── README.md                      # Project documentation
+├── app.py                       # Streamlit churn prediction app
+├── main.ipynb                   # Data analysis, training, and evaluation
+├── telco.csv                    # Telco customer dataset
+├── best_model.pkl               # Saved model used by the app
+├── feature_columns.pkl          # Feature names expected by the saved model
+├── joblib_utils.py              # Model save/load and prediction helpers
+├── model_utils.py               # Backward-compatible model helper imports
+├── churn_feature_importance.png # Feature-importance visualization
+├── requirements.txt             # Python dependencies
+└── README.md
 ```
 
-## Getting Started
+The app expects `best_model.pkl` and `feature_columns.pkl` to be in the project root.
 
-### Requirements
+## Requirements
 
 - Python 3.9 or later
-- Jupyter Notebook or VS Code with the Jupyter extension
+- pip
 
-Install the required Python packages:
+## Setup
+
+Open a terminal in the project directory and create a virtual environment:
 
 ```bash
-pip install numpy pandas matplotlib seaborn scikit-learn jupyter
+python -m venv .venv
 ```
 
-### Run the Project
+Activate it:
 
-1. Clone the repository:
+**Windows PowerShell**
 
-   ```bash
-   git clone https://github.com/vermaakshit135-tech/customer-churn-prediction.git
-   cd customer-churn-prediction
-   ```
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
 
-2. Open `customer_churn_analysis.ipynb` in Jupyter or VS Code.
-3. Run the notebook cells from top to bottom.
+**macOS / Linux**
 
-The notebook loads `telco.csv` using a relative path, so both files should remain in the project folder.
+```bash
+source .venv/bin/activate
+```
+
+Install the project dependencies:
+
+```bash
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+## Run the prediction app
+
+From the project directory, start Streamlit:
+
+```bash
+streamlit run app.py
+```
+
+The app opens in your browser. Choose the customer profile in the sidebar and select **Analyze Customer** to view the estimated churn probability, risk category, and key model features.
+
+If the app reports that model files are missing, place `best_model.pkl` and `feature_columns.pkl` in the project directory before starting it.
+
+## Run the notebook
+
+Open `main.ipynb` in Jupyter or VS Code with the Jupyter extension. Run the cells from top to bottom; the notebook reads `telco.csv` from the current project directory.
+
+The notebook saves model files through `joblib_utils.py`. Keep the notebook, dataset, and helper module together so its imports and relative file paths resolve correctly.
 
 ## Dataset
 
-The dataset contains customer-level information such as:
+`telco.csv` contains customer-level information about demographics, subscribed services, contracts, payment methods, monthly charges, and churn. The notebook uses `Churn Label` as the prediction target and removes identifier and post-churn information from the model features to reduce leakage.
 
-- Demographics and dependents
-- Phone and internet services
-- Contract and payment details
-- Monthly and total charges
-- Churn status and churn reason
+## Model evaluation
 
-The target used for prediction is the customer churn label.
-
-## Goal
-
-The goal is to compare multiple classification models and identify patterns that can help a telecom business understand and reduce customer churn.
+The notebook reports classification metrics and ROC-AUC on a held-out test set and displays the most important XGBoost features. Results depend on the dataset and training configuration; review the notebook outputs when retraining the model.
